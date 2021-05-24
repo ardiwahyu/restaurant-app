@@ -16,22 +16,42 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   List _list = [];
+  List dummyList = [];
 
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/data/data.json');
     final data = await json.decode(response);
     setState(() {
       _list = data["restaurants"];
+      dummyList = _list;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readJson();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    readJson();
     return Column(
       children: <Widget>[
-        HeaderWithSearchBox(),
+        HeaderWithSearchBox(function: (String text) {
+          setState(() {
+            if(text != null) {
+              List filter = [];
+              dummyList.forEach((element) {
+                if(element['city'].toUpperCase().contains(text.toUpperCase()))
+                  filter.add(element);
+              });
+              _list = filter;
+            } else {
+              _list = dummyList;
+            }
+          });
+        }),
         Container(
           height: size.height * 0.77 - kDefaultPadding,
           margin: EdgeInsets.only(top: kDefaultPadding),

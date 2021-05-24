@@ -3,6 +3,13 @@ import 'package:sub_flutter_pemula_2/constans.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HeaderWithSearchBox extends StatelessWidget {
+  const HeaderWithSearchBox({
+    Key key,
+    this.function
+  }): super(key: key);
+
+  final Function function;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,9 +59,11 @@ class HeaderWithSearchBox extends StatelessWidget {
                   Expanded(
                     child: TextField(
                       autofocus: false,
+                      textInputAction: TextInputAction.search,
+                      onChanged: function,
                       style: TextStyle(color: kTextColor),
                       decoration: InputDecoration(
-                        hintText: "Search restaurant",
+                        hintText: "Search restaurant by city",
                         hintStyle: TextStyle(
                           color: kHintTextColor,
                         ),
